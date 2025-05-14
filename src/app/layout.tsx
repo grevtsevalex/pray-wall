@@ -1,7 +1,7 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'Prayer Wall',
+  title: 'Молитвенная стена',
   description: 'Молитвенная стена',
 }
 
