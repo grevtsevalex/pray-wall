@@ -60,7 +60,7 @@ export default function NewPrayerForm() {
           onChange={(e) => setText(e.target.value)}
           rows={4}
           maxLength={TEXT_LIMIT}
-          placeholder="Напишите, за что вы хотите, чтобы помолились..."
+          placeholder="Напишите, за что Вы хотите, чтобы помолились..."
           className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
         />
         <div className="text-right text-sm text-gray-500">
