@@ -61,7 +61,12 @@ export default function PrayerPage() {
   return (
     <div className="max-w-xl mx-auto mt-10 space-y-6 px-4">
       <div className="text-center space-y-1">
-        <h1 className="text-2xl font-bold">Стена молитв</h1>
+        <a
+            href="/"
+            className="text-2xl font-bold hover:underline"
+            >
+            Стена молитв
+        </a>
         <p className="text-sm text-gray-600">
           Делитесь нуждами, молитесь друг за друга 🙏
         </p>
@@ -100,7 +105,7 @@ export default function PrayerPage() {
 
         <button
             onClick={() => router.push('/')}
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-blue-600 hover:underline mb-8"
         >
             ← Назад ко всем молитвам
         </button>
