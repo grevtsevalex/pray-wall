@@ -76,7 +76,12 @@ export default function PrayerList() {
       ) : (
         prayers.map((prayer) => (
           <div key={prayer.id} className="p-4 border rounded-xl shadow">
-            <p className="text-lg">{prayer.text}</p>
+            <a
+              href={`/prayer/${prayer.id}`}
+              className="text-lg hover:underline hover:text-blue-700 block transition"
+            >
+              {prayer.text}
+            </a>
             {prayer.name && (
               <p className="text-sm text-gray-600 mt-1">
                 Имя: <strong>{prayer.name}</strong>
