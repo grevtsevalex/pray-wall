@@ -14,9 +14,12 @@ type Prayer = {
 export default function PrayerList() {
   const [prayers, setPrayers] = useState<Prayer[]>([])
   const [loading, setLoading] = useState(true)
+  const [prayerCount, setPrayerCount] = useState(0)
+  const [reactionCount, setReactionCount] = useState(0)
 
   useEffect(() => {
     fetchPrayers()
+    fetchCounts()
 
     const channel = supabase
       .channel('realtime:prayers')
@@ -25,6 +28,7 @@ export default function PrayerList() {
         { event: 'INSERT', schema: 'public', table: 'prayers' },
         (payload) => {
           setPrayers((prev) => [payload.new as Prayer, ...prev])
+          setPrayerCount((prev) => prev + 1)
         }
       )
       .on(
@@ -56,6 +60,19 @@ export default function PrayerList() {
     setLoading(false)
   }
 
+  const fetchCounts = async () => {
+    const { count: prayersCount } = await supabase
+      .from('prayers')
+      .select('*', { count: 'exact', head: true })
+
+    const { count: reactionsCount } = await supabase
+      .from('prayer_reactions')
+      .select('*', { count: 'exact', head: true })
+
+    setPrayerCount(prayersCount || 0)
+    setReactionCount(reactionsCount || 0)
+  }
+
   const handleReact = async (prayerId: string) => {
     const reacted = JSON.parse(localStorage.getItem('reacted') || '[]')
     if (reacted.includes(prayerId)) {
@@ -68,7 +85,15 @@ export default function PrayerList() {
   }
 
   return (
-    <div className="mt-10 space-y-4 max-w-xl mx-auto">
+    <div className="mt-10 space-y-4 max-w-xl mx-auto px-4">
+      {/* 👇 Счётчики */}
+      {!loading && (
+        <div className="text-center text-gray-700 text-sm mb-4 space-y-1">
+          <p>На стене уже <strong>{prayerCount}</strong> молитвенные нужды</p>
+          <p>🙏 За них помолились <strong>{reactionCount}</strong> раз — присоединяйтесь!</p>
+        </div>
+      )}
+
       {loading ? (
         <p className="text-center text-gray-500">Загрузка молитв...</p>
       ) : prayers.length === 0 ? (
