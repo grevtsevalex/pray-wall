@@ -86,6 +86,7 @@ export default function PrayerList() {
 
   return (
     <div className="mt-10 space-y-4 max-w-xl mx-auto px-4">
+
       {/* 👇 Счётчики */}
       {!loading && (
         <div className="text-center text-gray-700 text-sm mb-4 space-y-1">
@@ -112,6 +113,7 @@ export default function PrayerList() {
                 Имя: <strong>{prayer.name}</strong>
               </p>
             )}
+            
             <div className="flex justify-between items-center mt-2 text-sm text-gray-500">
               <span>{new Date(prayer.created_at).toLocaleString()}</span>
               <button
