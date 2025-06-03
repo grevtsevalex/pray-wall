@@ -20,6 +20,7 @@ export default function PrayerList() {
   const [hasMore, setHasMore] = useState(true)
   const [prayerCount, setPrayerCount] = useState<number | null>(null)
   const [reactionCount, setReactionCount] = useState<number | null>(null)
+  const [recentlyPrayed, setRecentlyPrayed] = useState<string[]>([])
 
   useEffect(() => {
     fetchPrayers(1)
@@ -96,6 +97,11 @@ export default function PrayerList() {
       return
     }
 
+    setRecentlyPrayed(prev => [...prev, prayerId])
+    setTimeout(() => {
+      setRecentlyPrayed(prev => prev.filter(id => id !== prayerId))
+    }, 1000)
+
     await supabase.from('prayer_reactions').insert([{ prayer_id: prayerId }])
     localStorage.setItem('reacted', JSON.stringify([...reacted, prayerId]))
   }
@@ -129,8 +135,10 @@ export default function PrayerList() {
               </a>
               {prayer.name && (
                 <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
-                  <span className="inline-block w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
-                    {prayer.name.charAt(0).toUpperCase()}
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600">
+                    <span className="text-sm font-medium leading-none">
+                      {prayer.name.charAt(0).toUpperCase()}
+                    </span>
                   </span>
                   <span>{prayer.name}</span>
                 </div>
@@ -141,9 +149,13 @@ export default function PrayerList() {
                 </span>
                 <button
                   onClick={() => handleReact(prayer.id)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-200"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-200 ${
+                    recentlyPrayed.includes(prayer.id) ? 'prayer-success' : ''
+                  }`}
                 >
-                  <span className="text-xl animate-none hover:animate-ping-slow">🙏</span>
+                  <span className={`text-xl ${
+                    recentlyPrayed.includes(prayer.id) ? 'scale-pop' : 'animate-none hover:animate-ping-slow'
+                  }`}>🙏</span>
                   <span className="font-medium">{prayer.reaction_count}</span>
                 </button>
               </div>
