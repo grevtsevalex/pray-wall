@@ -117,26 +117,34 @@ export default function PrayerList() {
       ) : (
         <>
           {prayers.map((prayer) => (
-            <div key={prayer.id} className="p-4 border rounded-xl shadow">
+            <div 
+              key={prayer.id} 
+              className="group relative bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
+            >
               <a
                 href={`/prayer/${prayer.id}`}
-                className="text-lg hover:underline hover:text-blue-700 block transition"
+                className="block text-lg text-gray-800 leading-relaxed hover:text-blue-600 transition-colors duration-200"
               >
                 {prayer.text}
               </a>
               {prayer.name && (
-                <p className="text-sm text-gray-600 mt-1">
-                  Имя: <strong>{prayer.name}</strong>
-                </p>
+                <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
+                  <span className="inline-block w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
+                    {prayer.name.charAt(0).toUpperCase()}
+                  </span>
+                  <span>{prayer.name}</span>
+                </div>
               )}
-              <div className="flex justify-between items-center mt-2 text-sm text-gray-500">
-                <span>{new Date(prayer.created_at).toLocaleString()}</span>
+              <div className="mt-4 flex justify-between items-center">
+                <span className="text-sm text-gray-400">
+                  {new Date(prayer.created_at).toLocaleString()}
+                </span>
                 <button
                   onClick={() => handleReact(prayer.id)}
-                  className="flex items-center space-x-2 text-blue-700 hover:scale-110 active:scale-95 transition-transform text-lg font-medium"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-200"
                 >
-                  <span className="text-2xl animate-none hover:animate-ping-slow">🙏</span>
-                  <span>{prayer.reaction_count}</span>
+                  <span className="text-xl animate-none hover:animate-ping-slow">🙏</span>
+                  <span className="font-medium">{prayer.reaction_count}</span>
                 </button>
               </div>
             </div>
